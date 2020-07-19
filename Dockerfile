@@ -14,7 +14,7 @@ ENV JMODELICA_HOME=/usr/local/JModelica
 ENV PYTHONPATH=/usr/local/JModelica/Python
 
 ENV IPOPT_HOME=/usr/local/Ipopt-3.12.4
-# ENV SUNDIALS_HOME /usr/local/JModelica/ThirdParty/Sundials
+ENV SUNDIALS_HOME /usr/local/JModelica/ThirdParty/Sundials
 
 ENV HOME /home/developer
 ENV USER developer
