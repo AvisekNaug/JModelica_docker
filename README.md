@@ -1,6 +1,6 @@
-Steps to run a Jmodelica docker that supports ipython interaction on a Linux Server
+# Steps to run a Jmodelica docker that supports ipython interaction on a Linux Server
 
-This assumes that
+## This assumes that
 * Docker is installed
 * Docker sudo group is created
 * User is added to docker sudo group
