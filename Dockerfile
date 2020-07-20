@@ -113,3 +113,6 @@ RUN rm -rf $SRC_DIR
 
 # Commented since developer is not getting write priviledges
 # USER developer
+
+
+ENTRYPOINT cd $HOME && echo "Hello Developer. Welcome to the Jmodelica container! Author: avisek.naug@vanderbilt.edu" && /bin/bash -i
