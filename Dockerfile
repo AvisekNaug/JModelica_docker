@@ -26,19 +26,6 @@ ENV JCC_JDK /usr/lib/jvm/java-8-openjdk-amd64
 ENV DEBIAN_FRONTEND noninteractive
 
 
-# Create home dir, add yourself to sudoers etc.; Replace 1000 with your user / group id
-RUN export uid=1003 gid=1003 && \
-	mkdir -p /home/developer && \
-	mkdir -p /etc/sudoers.d && \
-	echo "developer:x:${uid}:${gid}:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd && \
-	echo "developer:x:${uid}:" >> /etc/group && \
-	echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
-	chmod 0440 /etc/sudoers.d/developer && \
-	chown ${uid}:${gid} -R /home/developer
-
-
-
-
 # Installing pre-compiled packages
 RUN apt-get update && \
 	apt-get install -y \
@@ -61,9 +48,8 @@ RUN apt-get update && \
 	libboost-dev \
 	wget \
 	unzip \
+	sudo \
 	nano
-
-
 
 # Install Java 8
 RUN apt install -y openjdk-8-jdk
@@ -71,7 +57,6 @@ RUN ln -s /usr/lib/jvm/java-8-openjdk-amd64 /usr/lib/jvm/java-8-oracle
 
 # Install jcc-3.0 to avoid error in python -c "import jcc"
 RUN pip install --upgrade jcc==3.5
-
 
 
 # Installing Ipopt
@@ -93,7 +78,7 @@ RUN cd $SRC_DIR && \
 
 
 
-# Installing Jmodelica: Copy Jmodelica zip file from local system to inside of the docker
+# Installing Jmodelica: Copy Jmodelica zip file from local system to inside of the docker 
 COPY jmodelica.zip $SRC_DIR
 
 # Installing JModelica
@@ -111,8 +96,18 @@ RUN cd $SRC_DIR && \
 # Remove source code
 RUN rm -rf $SRC_DIR
 
-# Commented since developer is not getting write priviledges
-# USER developer
+# Create home dir, add yourself to sudoers etc.; Replace 1000 with your user / group id
+RUN export uid=1003 gid=1003 && \
+	mkdir -p /home/developer && \
+	mkdir -p /etc/sudoers.d && \
+	echo "developer:x:${uid}:${gid}:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd && \
+	echo "developer:x:${uid}:" >> /etc/group && \
+	echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
+	chmod 0440 /etc/sudoers.d/developer && \
+	chown ${uid}:${gid} -R /home/developer
 
+# make sure user does not have root access
+USER developer
+WORKDIR /home/${USER}
 
-ENTRYPOINT cd $HOME && echo "Hello Developer. Welcome to the Jmodelica container! Author: avisek.naug@vanderbilt.edu" && /bin/bash -i
+ENTRYPOINT echo "Welcome to the Jmodelica container! Author: avisek.naug@vanderbilt.edu" && /bin/bash -i
