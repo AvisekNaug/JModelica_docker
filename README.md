@@ -66,3 +66,27 @@ cstr_casadi.run_demo()
 from pyjmi.examples import RLC
 RLC.run_demo()
 ```
+
+
+## To run python 3 after starting the docker do the following(TODO: create separate docker isntructions later)
+```bash
+mkdir Downloads
+cd Downloads/
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+export PATH=/home/developer/miniconda3/bin:$PATH # to make conda work
+conda config --set auto_activate_base false # exit and log back in for effect to take place
+conda create -n myenv
+conda activate myenv
+conda init bash # exit and log back in for effect to take place
+conda install -c conda-forge pyfmi
+conda install matplotlib ipython
+export PYTHONPATH=/home/developer/miniconda3/envs/myenv/lib/python3.8/site-packages:$PYTHONPATH
+# Then run the examples in ipython
+```
+
+```ipython
+import matplotlib
+matplotlib.use('tkagg')
+import matplotlib.pyplot as plt
+```
