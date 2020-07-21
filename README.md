@@ -88,5 +88,5 @@ export PYTHONPATH=/home/developer/miniconda3/envs/myenv/lib/python3.8/site-packa
 ```ipython
 import matplotlib
 matplotlib.use('tkagg')
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt # see link https://github.com/matplotlib/matplotlib/issues/8929#issuecomment-317233404
 ```
