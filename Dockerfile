@@ -106,8 +106,43 @@ RUN export uid=1003 gid=1003 && \
 	chmod 0440 /etc/sudoers.d/developer && \
 	chown ${uid}:${gid} -R /home/developer
 
-# make sure user does not have root access
+# ================NEW Installations for installing miniconda=================================
+
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+ENV PATH /home/developer/miniconda3/bin:$PATH
+ENV PYTHONPATH /home/developer/miniconda3/envs/modelicagym/lib/python3.8/site-packages:$PYTHONPATH
+
+RUN apt-get update --fix-missing && \
+	apt-get install -y \
+	wget bzip2 ca-certificates curl git && \
+	apt-get clean && \
+	rm -rf /var/lib/apt/lists/*
+
+# =========Installing miniconda===========
+RUN cd $HOME && \
+	mkdir Downloads && \
+	cd Downloads/ && \
+	wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && \
+	/bin/bash miniconda.sh -b -p /home/developer/miniconda3 && \
+	rm miniconda.sh && \
+	/home/developer/miniconda3/bin/conda clean -tipsy && \
+	ln -s /home/developer/miniconda3/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+    echo ". /home/developer/miniconda3/etc/profile.d/conda.sh" >> ~/.bashrc
+
+# Don't activate conda on startup
+RUN conda config --set auto_activate_base false
+
+COPY environment.yml .
+RUN conda env create -f environment.yml && conda clean -a
+# =========Installing miniconda===========
+
+
+# Fix matplotlib issues
+RUN mkdir -p /root/.config/matplotlib && \
+	echo "backend : tkagg" > /root/.config/matplotlib/matplotlibrc
+
 USER developer
+# make sure user does not have root access
 WORKDIR /home/${USER}
 
 ENTRYPOINT echo "Welcome to the Jmodelica container! Author: avisek.naug@vanderbilt.edu" && /bin/bash -i
