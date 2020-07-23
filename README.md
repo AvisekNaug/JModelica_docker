@@ -68,8 +68,8 @@ RLC.run_demo()
 ```
 
 
-## To run python 3 after starting the docker do the following(TODO: create separate docker isntructions later)
-```bash
+## To run python 3 after starting the docker do the following~~(TODO: create separate docker isntructions later)~~ done!
+~~```bash
 mkdir Downloads
 cd Downloads/
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -85,7 +85,7 @@ export PYTHONPATH=/home/developer/miniconda3/envs/myenv/lib/python3.8/site-packa
 # Then run the examples in ipython
 ```
 
-```ipython
+~~~```ipython
 import matplotlib
 matplotlib.use('tkagg')
 import matplotlib.pyplot as plt # see link https://github.com/matplotlib/matplotlib/issues/8929#issuecomment-317233404
