@@ -83,9 +83,8 @@ conda install -c conda-forge pyfmi
 conda install matplotlib ipython
 export PYTHONPATH=/home/developer/miniconda3/envs/myenv/lib/python3.8/site-packages:$PYTHONPATH
 # Then run the examples in ipython
-```
 
-~~~```ipython
+```ipython
 import matplotlib
 matplotlib.use('tkagg')
 import matplotlib.pyplot as plt # see link https://github.com/matplotlib/matplotlib/issues/8929#issuecomment-317233404
