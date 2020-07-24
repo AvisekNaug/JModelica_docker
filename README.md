@@ -114,3 +114,11 @@ import matplotlib
 matplotlib.use('tkagg')
 import matplotlib.pyplot as plt # see link https://github.com/matplotlib/matplotlib/issues/8929#issuecomment-317233404
 ```
+
+## In case you want to render standard OpenAI gym environments, install the following inside the container
+```bash
+sudo apt-get update
+sudo apt update
+sudo apt-get install -y git
+sudo apt install -y freeglut3 freeglut3-dev
+```
