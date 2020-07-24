@@ -1,4 +1,4 @@
-# Steps to run a Jmodelica docker that supports ipython interaction on a Linux Server
+# Steps to run a Jmodelica docker that supports supports Jmodelica, python2, pyfmi, miniconda3 interaction on a Linux Server
 
 ## This assumes that
 * Docker is installed
@@ -45,7 +45,12 @@ If setting up container on local computer
 docker run -it -e DISPLAY=${DISPLAY} jmodelica:1.0
 ```
 
-### Inside the docker, try to run toy examples in ipython shell
+### Inside the docker activate conda modelicagym if needed
+```bash
+conda activate modelicagym
+```
+
+### Try to run toy examples in ipython shell
 ```bash
 dveloper@container_id# ipython
 ```
@@ -62,27 +67,12 @@ from pyjmi.examples import cstr_casadi
 cstr_casadi.run_demo()
 ```
 
+
+The following example only runs outside modelicagym conda env as pyjmi is not availablr inside modelicagym env
 ```ipython
 from pyjmi.examples import RLC
 RLC.run_demo()
 ```
-
-
-## To run python 3 after starting the docker do the following~~(TODO: create separate docker isntructions later)~~ done!
-~~```bash
-mkdir Downloads
-cd Downloads/
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-bash Miniconda3-latest-Linux-x86_64.sh
-export PATH=/home/developer/miniconda3/bin:$PATH # to make conda work
-conda config --set auto_activate_base false # exit and log back in for effect to take place
-conda create -n myenv
-conda activate myenv
-conda init bash # exit and log back in for effect to take place
-conda install -c conda-forge pyfmi
-conda install matplotlib ipython
-export PYTHONPATH=/home/developer/miniconda3/envs/myenv/lib/python3.8/site-packages:$PYTHONPATH
-# Then run the examples in ipython
 
 ```ipython
 import matplotlib
