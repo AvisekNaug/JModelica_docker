@@ -16,14 +16,12 @@ ENV SRC_DIR=/usr/local/src \
 	JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 \
 	JCC_JDK=/usr/lib/jvm/java-8-openjdk-amd64 \
 	DEBIAN_FRONTEND=noninteractive \
-	LANG=C.UTF-8 LC_ALL=C.UTF-8 \
-	PATH=/home/developer/miniconda3/bin:$PATH \
-	PYTHONPATH=/home/developer/miniconda3/envs/modelicagym/lib/python3.8/site-packages:$PYTHONPATH
+	LANG=C.UTF-8 LC_ALL=C.UTF-8
 
 # Installing Jmodelica: Copy Jmodelica zip file from local system to inside of the docker 
 COPY jmodelica.zip $SRC_DIR
 
-# Installing pre-compiled packages
+# Installing everything
 RUN apt-get update --fix-missing && \
 	apt-get install -y \
 	g++ \
@@ -93,8 +91,8 @@ RUN apt-get update --fix-missing && \
 	rm miniconda.sh && \
 	/home/developer/miniconda3/bin/conda clean -tipsy && \
 	ln -s /home/developer/miniconda3/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
-    echo ". /home/developer/miniconda3/etc/profile.d/conda.sh" >> ~/.bashrc && \
-    conda config --set auto_activate_base false && \
+    	echo ". /home/developer/miniconda3/etc/profile.d/conda.sh" >> ~/.bashrc && \
+   	conda config --set auto_activate_base false && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/*
 
@@ -105,6 +103,16 @@ RUN conda env create -f environment.yml && conda clean -a && \
 	echo "backend : tkagg" > /root/.config/matplotlib/matplotlibrc && \
 	rm -rf environment.yml
 
+
+RUN echo "bind 'set bell-style none'" >> ~/.bashrc && \
+	cd /home/developer/miniconda3/envs/modelicagym && \
+	mkdir -p ./etc/conda/activate.d && \
+	mkdir -p ./etc/conda/deactivate.d && \
+	echo '#!/bin/sh \n\n export PYTHONPATH=/home/developer/miniconda3/envs/modelicagym/lib/python3.8/site-packages \n' >> ./etc/conda/activate.d/env_vars.sh && \
+	echo '#!/bin/sh \n\n export PYTHONPATH=/usr/local/JModelica/Python \n' >> ./etc/conda/deactivate.d/env_vars.sh
+
+
+# prevent root access
 USER developer
 WORKDIR /home/${USER}
 
