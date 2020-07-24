@@ -9,6 +9,7 @@
 * DISPLAY environmental variable is set (for eg "localhost:10.0")
 
 Do not clone this folder! This repo merely exists to have all the isntructions and is by no means complete.
+! Note that pymodelica and pyjmi is supported only for python 2 installed with JModelica
 
 ## Steps:
 
@@ -38,24 +39,51 @@ If using remote server (Make sure Xming is installed on local computer and liste
 ```bash
 docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH jmodelica:1.0
 ```
-add "-v $HOME/jmodellica_tut/modelica-buildings:/home/developer/modelicabuildings:ro" to bash if mounting buildings library
 OR
-
 If setting up container on local computer
 ```bash
 docker run -it -e DISPLAY=${DISPLAY} jmodelica:1.0
 ```
+* add "-v $path/to/modelica-buildings:path/to/mount:ro" if mounting buildings library
 
 ```bash
-export MODELICAPATH=/home/developer/modelicabuildings:$MODELICAPATH
+export MODELICAPATH=path/to/mount:$MODELICAPATH
 ```
 
-### Inside the docker activate conda modelicagym if needed
+
+### Compile any .mo model in python2 environment using pymodelica
+```bash
+ipython
+```
+```ipython
+from pymodelica import compile_fmu
+model="Buildings.Controls.OBC.CDL.Continuous.Validation.LimPID" #taken form https://github.com/lbl-srg/docker-ubuntu-jmodelica/blob/master/jmodelica.py
+fmu_name = compile_fmu(model) # writes the fmu to fmu_name as well as to local folder
+```
+Now, you can simulate fmu either in pyfmi for python2 or pyfmi for python3
+For python2
+```bash
+ipython
+```
+```ipython
+from pyfmi import load_fmu
+mod = load_fmu(Buildings.Controls.OBC.CDL.Continuous.Validation.LimPID.fmu)
+res = mod.simulate()
+```
+
+For python2
 ```bash
 conda activate modelicagym
+ipython
+```
+```ipython
+from pyfmi import load_fmu
+mod = load_fmu(Buildings.Controls.OBC.CDL.Continuous.Validation.LimPID.fmu)
+res = mod.simulate()
 ```
 
-### Try to run toy examples in ipython shell
+### Other examples in python 2 ipython shell in base environment
+
 ```bash
 dveloper@container_id# ipython
 ```
