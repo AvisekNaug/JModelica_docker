@@ -36,7 +36,7 @@ source x11config.sh
 ### Start the docker
 If using remote server (Make sure Xming is installed on local computer and listeing on 10.0)
 ```bash
-docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH jmodelica:1.0
+docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH -v $HOME/jmodellica_tut/modelica-buildings:/home/developer/modelicabuildings:ro -e MODELICAPATH=/home/developer/ jmodelica:1.0
 ```
 OR
 
