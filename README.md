@@ -36,13 +36,18 @@ source x11config.sh
 ### Start the docker
 If using remote server (Make sure Xming is installed on local computer and listeing on 10.0)
 ```bash
-docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH -v $HOME/jmodellica_tut/modelica-buildings:/home/developer/modelicabuildings:ro -e MODELICAPATH=/home/developer/ jmodelica:1.0
+docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH jmodelica:1.0
 ```
+add "-v $HOME/jmodellica_tut/modelica-buildings:/home/developer/modelicabuildings:ro" to bash if mounting buildings library
 OR
 
 If setting up container on local computer
 ```bash
 docker run -it -e DISPLAY=${DISPLAY} jmodelica:1.0
+```
+
+```bash
+export MODELICAPATH=/home/developer/modelicabuildings:$MODELICAPATH
 ```
 
 ### Inside the docker activate conda modelicagym if needed
