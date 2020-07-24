@@ -1,33 +1,30 @@
 FROM ubuntu:18.04
 
 
-
 MAINTAINER Avisek Naug <avisek.naug@vanderbilt.edu>
 
 
-
 # Set environment variables
-ENV SRC_DIR /usr/local/src
+ENV SRC_DIR=/usr/local/src \
+	MODELICAPATH=/usr/local/JModelica/ThirdParty/MSL \
+	JMODELICA_HOME=/usr/local/JModelica \
+	PYTHONPATH=/usr/local/JModelica/Python \
+	IPOPT_HOME=/usr/local/Ipopt-3.12.4 \
+	SUNDIALS_HOME=/usr/local/JModelica/ThirdParty/Sundials \
+	HOME=/home/developer \
+	USER=developer \
+	JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64 \
+	JCC_JDK=/usr/lib/jvm/java-8-openjdk-amd64 \
+	DEBIAN_FRONTEND=noninteractive \
+	LANG=C.UTF-8 LC_ALL=C.UTF-8 \
+	PATH=/home/developer/miniconda3/bin:$PATH \
+	PYTHONPATH=/home/developer/miniconda3/envs/modelicagym/lib/python3.8/site-packages:$PYTHONPATH
 
-ENV MODELICAPATH /usr/local/JModelica/ThirdParty/MSL
-ENV JMODELICA_HOME=/usr/local/JModelica
-ENV PYTHONPATH=/usr/local/JModelica/Python
-
-ENV IPOPT_HOME=/usr/local/Ipopt-3.12.4
-ENV SUNDIALS_HOME /usr/local/JModelica/ThirdParty/Sundials
-
-ENV HOME /home/developer
-ENV USER developer
-
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
-ENV JCC_JDK /usr/lib/jvm/java-8-openjdk-amd64
-
-# Make it non-interactive
-ENV DEBIAN_FRONTEND noninteractive
-
+# Installing Jmodelica: Copy Jmodelica zip file from local system to inside of the docker 
+COPY jmodelica.zip $SRC_DIR
 
 # Installing pre-compiled packages
-RUN apt-get update && \
+RUN apt-get update --fix-missing && \
 	apt-get install -y \
 	g++ \
 	subversion \
@@ -49,18 +46,11 @@ RUN apt-get update && \
 	wget \
 	unzip \
 	sudo \
-	nano
-
-# Install Java 8
-RUN apt install -y openjdk-8-jdk
-RUN ln -s /usr/lib/jvm/java-8-openjdk-amd64 /usr/lib/jvm/java-8-oracle
-
-# Install jcc-3.0 to avoid error in python -c "import jcc"
-RUN pip install --upgrade jcc==3.5
-
-
-# Installing Ipopt
-RUN cd $SRC_DIR && \
+	nano \
+	openjdk-8-jdk && \
+	ln -s /usr/lib/jvm/java-8-openjdk-amd64 /usr/lib/jvm/java-8-oracle && \
+	pip install --upgrade jcc==3.5 && \
+	cd $SRC_DIR && \
 	wget -O - https://github.com/AvisekNaug/JModelica_docker/raw/master/Ipopt-3.12.4.tgz | tar xzf - && \
 	cd $SRC_DIR/Ipopt-3.12.4/ThirdParty/Blas && \
 	./get.Blas && \
@@ -74,16 +64,10 @@ RUN cd $SRC_DIR && \
 	mkdir build && \
 	cd build && \
 	../configure --prefix=/usr/local/Ipopt-3.12.4 && \
-	make install
-
-
-
-# Installing Jmodelica: Copy Jmodelica zip file from local system to inside of the docker 
-COPY jmodelica.zip $SRC_DIR
-
-# Installing JModelica
-RUN cd $SRC_DIR && \
+	make install && \
+	cd $SRC_DIR && \
 	unzip jmodelica.zip && \
+	rm -rf jmodelica.zip && \
 	mv JModelica.org-2.14 JModelica && \
 	cd JModelica && \
 	mkdir build && \
@@ -91,35 +75,17 @@ RUN cd $SRC_DIR && \
 	cd build && \
 	../configure --with-ipopt=/usr/local/Ipopt-3.12.4 --prefix=/usr/local/JModelica && \
 	make install && \
-	make casadi_interface
-
-# Remove source code
-RUN rm -rf $SRC_DIR
-
-# Create home dir, add yourself to sudoers etc.; Replace 1000 with your user / group id
-RUN export uid=1003 gid=1003 && \
+	make casadi_interface && \
+	rm -rf $SRC_DIR && \
+	export uid=1003 gid=1003 && \
 	mkdir -p /home/developer && \
 	mkdir -p /etc/sudoers.d && \
 	echo "developer:x:${uid}:${gid}:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd && \
 	echo "developer:x:${uid}:" >> /etc/group && \
 	echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
 	chmod 0440 /etc/sudoers.d/developer && \
-	chown ${uid}:${gid} -R /home/developer
-
-# ================NEW Installations for installing miniconda=================================
-
-ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
-ENV PATH /home/developer/miniconda3/bin:$PATH
-ENV PYTHONPATH /home/developer/miniconda3/envs/modelicagym/lib/python3.8/site-packages:$PYTHONPATH
-
-RUN apt-get update --fix-missing && \
-	apt-get install -y \
-	wget bzip2 ca-certificates curl git && \
-	apt-get clean && \
-	rm -rf /var/lib/apt/lists/*
-
-# =========Installing miniconda===========
-RUN cd $HOME && \
+	chown ${uid}:${gid} -R /home/developer && \
+	cd $HOME && \
 	mkdir Downloads && \
 	cd Downloads/ && \
 	wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && \
@@ -127,22 +93,19 @@ RUN cd $HOME && \
 	rm miniconda.sh && \
 	/home/developer/miniconda3/bin/conda clean -tipsy && \
 	ln -s /home/developer/miniconda3/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
-    echo ". /home/developer/miniconda3/etc/profile.d/conda.sh" >> ~/.bashrc
+    echo ". /home/developer/miniconda3/etc/profile.d/conda.sh" >> ~/.bashrc && \
+    conda config --set auto_activate_base false && \
+	apt-get clean && \
+	rm -rf /var/lib/apt/lists/*
 
-# Don't activate conda on startup
-RUN conda config --set auto_activate_base false
 
 COPY environment.yml .
-RUN conda env create -f environment.yml && conda clean -a
-# =========Installing miniconda===========
-
-
-# Fix matplotlib issues
-RUN mkdir -p /root/.config/matplotlib && \
-	echo "backend : tkagg" > /root/.config/matplotlib/matplotlibrc
+RUN conda env create -f environment.yml && conda clean -a && \
+	mkdir -p /root/.config/matplotlib && \
+	echo "backend : tkagg" > /root/.config/matplotlib/matplotlibrc && \
+	rm -rf environment.yml
 
 USER developer
-# make sure user does not have root access
 WORKDIR /home/${USER}
 
 ENTRYPOINT echo "Welcome to the Jmodelica container! Author: avisek.naug@vanderbilt.edu" && /bin/bash -i
