@@ -1,6 +1,6 @@
-# Steps to run a Jmodelica docker that supports supports Jmodelica, python2, pyfmi, miniconda3 interaction on a Linux Server
+## Steps to run a Jmodelica docker that supports supports Jmodelica, python2, pyfmi, miniconda3 interaction on a Linux Server
 
-## This assumes that
+### This assumes that
 * Docker is installed
 * Docker sudo group is created
 * User is added to docker sudo group
@@ -9,7 +9,8 @@
 * DISPLAY environmental variable is set (for eg "localhost:10.0")
 
 Do not clone this folder! This repo merely exists to have all the isntructions and is by no means complete.
-! Note that pymodelica and pyjmi is supported only for python 2 installed with JModelica
+
+Note that pymodelica and pyjmi is supported only for python 2 installed with JModelica
 
 ## Steps:
 
@@ -61,7 +62,8 @@ model="Buildings.Controls.OBC.CDL.Continuous.Validation.LimPID" #taken form http
 fmu_name = compile_fmu(model) # writes the fmu to fmu_name as well as to local folder
 ```
 Now, you can simulate fmu either in pyfmi for python2 or pyfmi for python3
-For python2
+
+#### For python2
 ```bash
 ipython
 ```
@@ -70,8 +72,8 @@ from pyfmi import load_fmu
 mod = load_fmu(Buildings.Controls.OBC.CDL.Continuous.Validation.LimPID.fmu)
 res = mod.simulate()
 ```
-
-For python2
+or
+#### For python3
 ```bash
 conda activate modelicagym
 ipython
