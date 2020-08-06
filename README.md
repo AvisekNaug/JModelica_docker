@@ -16,13 +16,17 @@ Note that pymodelica and pyjmi is supported only for python 2 installed with JMo
 
 ### Obtain docker file
 ```bash
-mkdir JModelica_docker
-cd JModelica_docker
+mkdir $HOME/JModelica_docker
+cd $HOME/JModelica_docker
 wget https://github.com/AvisekNaug/JModelica_docker/raw/master/Dockerfile
 ```
 ### Copy Jmodelica Source code in zip format to this directory and rename it
 ```bash
-mv <path to Jmodelica installation zip file> JModelica_docker/jmodelica.zip
+mv <path to Jmodelica installation zip file> $HOME/JModelica_docker/jmodelica.zip
+```
+or download JModelica installation source zip from my googledrive using
+```bash
+source jmodelica_downloader.sh
 ```
 
 ### Build the docker
@@ -46,6 +50,7 @@ If setting up container on local computer
 docker run -it -e DISPLAY=${DISPLAY} jmodelica:1.0
 ```
 * add "-v $path/to/modelica-buildings:path/to/mount:ro" if mounting buildings library
+* eg -v $/home/nauga/buildings_library_dev:/home/developer/buildings_library_dev:ro" for read only. remove "ro" if you want to modify the folder components from inside the docker
 
 ```bash
 export MODELICAPATH=path/to/mount:$MODELICAPATH
