@@ -22,7 +22,7 @@ wget https://github.com/AvisekNaug/JModelica_docker/raw/master/Dockerfile
 ```
 ### Copy Jmodelica Source code in zip format to this directory and rename it
 ```bash
-mv <name of your Jmodelica installation file> jmodelica.zip
+mv <path to Jmodelica installation zip file> JModelica_docker/jmodelica.zip
 ```
 
 ### Build the docker
