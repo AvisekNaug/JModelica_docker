@@ -92,7 +92,7 @@ ipython
 ```
 ```ipython
 from pyfmi import load_fmu
-mod = load_fmu(Buildings.Controls.OBC.CDL.Continuous.Validation.LimPID.fmu)
+mod = load_fmu(Buildings_Controls_OBC_CDL_Continuous_Validation_LimPID.fmu)
 res = mod.simulate()
 ```
 or
@@ -103,7 +103,7 @@ ipython
 ```
 ```ipython
 from pyfmi import load_fmu
-mod = load_fmu(Buildings.Controls.OBC.CDL.Continuous.Validation.LimPID.fmu)
+mod = load_fmu(Buildings_Controls_OBC_CDL_Continuous_Validation_LimPID.fmu)
 res = mod.simulate()
 ```
 
