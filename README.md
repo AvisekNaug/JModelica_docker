@@ -34,28 +34,47 @@ source jmodelica_downloader.sh
 docker build --tag jmodelica:1.0 .
 ```
 
-### Ensure X11 forwarding works correctly(Do this only if working on a remote server)
+### Start the docker for generic use(for use with buildings library see next step)
+
+####  If using remote server
+Ensure X11 forwarding works correctly(Do this only if working on a remote server). Make sure Xming is installed on local computer and listeing on 10.0
 ```bash
 source x11config.sh
 ```
-
-### Start the docker
-If using remote server (Make sure Xming is installed on local computer and listeing on 10.0)
 ```bash
 docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH jmodelica:1.0
 ```
-OR
-If setting up container on local computer
+
+##### or If setting up container on local computer
 ```bash
 docker run -it -e DISPLAY=${DISPLAY} jmodelica:1.0
 ```
-* add "-v $path/to/modelica-buildings:path/to/mount:ro" if mounting buildings library
-* eg -v $HOME/nauga/buildings_library_dev:/home/developer/buildings_library_dev:ro" for read only. remove "ro" if you want to modify the folder components from inside the docker
 
+### Follow this step is you are starting the docker to use with modelica buildings library
+####  If using remote server
 ```bash
-export MODELICAPATH=path/to/mount:$MODELICAPATH
+source x11config.sh
 ```
-
+```bash
+docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH -v $path/to/modelica-buildings_library:path/to/mount/modelica-buildings_library jmodelica:1.0
+```
+for example for my host system with username nauga, having the buildings library inside buildings_library_dev
+```bash
+docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH -v $HOME/nauga/buildings_library_dev:/home/developer/buildings_library_dev jmodelica:1.0
+```
+After starting a container, add location of the buildings library to MODELICAPATH
+```bash
+export MODELICAPATH=path/to/mount/modelica-buildings_library:$MODELICAPATH
+```
+* eg -v $HOME/nauga/buildings_library_dev:/home/developer/buildings_library_dev:ro" for read only. remove "ro" if you want to modify the folder components from inside the docker
+##### or If setting up container on local computer
+```bash
+docker run -it -e DISPLAY=${DISPLAY} -v $path/to/modelica-buildings_library:path/to/mount/modelica-buildings_library jmodelica:1.0
+```
+After starting a container, add location of the buildings library to MODELICAPATH
+```bash
+export MODELICAPATH=path/to/mount/modelica-buildings_library:$MODELICAPATH
+```
 
 ### Compile any .mo model in python2 environment using pymodelica
 ```bash
