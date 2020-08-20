@@ -33,7 +33,7 @@ source jmodelica_downloader.sh
 docker build --tag jmodelica:1.0 .
 ```
 
-## Start the docker for generic use(for use with buildings library see next step)
+## Start the docker for generic use(for use with buildings library see [next step](#follow-this-step-is-you-are-starting-the-docker-to-use-with-modelica-buildings-library))
 
 ###  If using remote server
 Ensure X11 forwarding works correctly(Do this only if working on a remote server). Make sure Xming is installed on local computer and listeing on 10.0
