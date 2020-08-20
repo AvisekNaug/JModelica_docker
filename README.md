@@ -30,7 +30,7 @@ source jmodelica_downloader.sh
 
 ## Build the docker
 ```bash
-docker build --tag jmodelica:1.0 .
+docker build --tag jmodelica:2.0 .
 ```
 
 ## Start the docker for generic use(for use with buildings library see [next step](#follow-this-step-is-you-are-starting-the-docker-to-use-with-modelica-buildings-library))
@@ -46,7 +46,7 @@ docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH jmode
 
 ### or If setting up container on local computer
 ```bash
-docker run -it -e DISPLAY=${DISPLAY} jmodelica:1.0
+docker run -it -e DISPLAY=${DISPLAY} jmodelica:2.0
 ```
 
 ## Follow this step is you are starting the docker to use with modelica buildings library
@@ -55,20 +55,25 @@ docker run -it -e DISPLAY=${DISPLAY} jmodelica:1.0
 source x11config.sh
 ```
 ```bash
-docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH -v $path/to/modelica-buildings_library:path/to/mount/modelica-buildings_library jmodelica:1.0
+docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH -v $path/to/modelica-buildings_library:path/to/mount/modelica-buildings_library jmodelica:2.0
 ```
 for example for my host system with username nauga, having the buildings library inside buildings_library_dev
 ```bash
-docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH -v /home/nauga/buildings_library_dev:/home/developer/buildings_library_dev jmodelica:1.0
+docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH -v home/nauga/buildings_library_dev:/home/developer/buildings_library_dev:ro jmodelica:2.0
 ```
 After starting a container, add location of the buildings library to MODELICAPATH
 ```bash
 export MODELICAPATH=path/to/mount/modelica-buildings_library:$MODELICAPATH
 ```
+for example
+```bash
+export MODELICAPATH=home/developer/buildings_library_dev:$MODELICAPATH
+```
+
 * eg -v $HOME/nauga/buildings_library_dev:/home/developer/buildings_library_dev:ro" for read only. remove "ro" if you want to modify the folder components from inside the docker
 ### or If setting up container on local computer
 ```bash
-docker run -it -e DISPLAY=${DISPLAY} -v $path/to/modelica-buildings_library:path/to/mount/modelica-buildings_library jmodelica:1.0
+docker run -it -e DISPLAY=${DISPLAY} -v $path/to/modelica-buildings_library:path/to/mount/modelica-buildings_library jmodelica:2.0
 ```
 After starting a container, add location of the buildings library to MODELICAPATH
 ```bash
