@@ -1,6 +1,6 @@
-## Steps to run a Jmodelica docker that supports supports Jmodelica, python2, pyfmi, miniconda3 interaction on a Linux Server
+# Steps to run a Jmodelica docker that supports supports Jmodelica, python2, pyfmi, miniconda3 interaction on a Linux Server
 
-### This assumes that
+## This assumes that
 * Docker is installed
 * Docker sudo group is created
 * User is added to docker sudo group
@@ -9,18 +9,17 @@
 * DISPLAY environmental variable is set (for eg "localhost:10.0")
 
 Do not clone this folder! This repo merely exists to have all the isntructions and is by no means complete.
-
 Note that pymodelica and pyjmi is supported only for python 2 installed with JModelica
 
-## Steps:
+# Steps:
 
-### Obtain docker file
+## Obtain docker file
 ```bash
 mkdir $HOME/JModelica_docker
 cd $HOME/JModelica_docker
 wget https://github.com/AvisekNaug/JModelica_docker/raw/master/Dockerfile
 ```
-### Copy Jmodelica Source code in zip format to this directory and rename it
+## Copy Jmodelica Source code in zip format to this directory and rename it
 ```bash
 mv <path to Jmodelica installation zip file> $HOME/JModelica_docker/jmodelica.zip
 ```
@@ -29,14 +28,14 @@ or download JModelica installation source zip from my googledrive using
 source jmodelica_downloader.sh
 ```
 
-### Build the docker
+## Build the docker
 ```bash
 docker build --tag jmodelica:1.0 .
 ```
 
-### Start the docker for generic use(for use with buildings library see next step)
+## Start the docker for generic use(for use with buildings library see next step)
 
-####  If using remote server
+###  If using remote server
 Ensure X11 forwarding works correctly(Do this only if working on a remote server). Make sure Xming is installed on local computer and listeing on 10.0
 ```bash
 source x11config.sh
@@ -45,13 +44,13 @@ source x11config.sh
 docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH jmodelica:1.0
 ```
 
-##### or If setting up container on local computer
+#### or If setting up container on local computer
 ```bash
 docker run -it -e DISPLAY=${DISPLAY} jmodelica:1.0
 ```
 
-### Follow this step is you are starting the docker to use with modelica buildings library
-####  If using remote server
+## Follow this step is you are starting the docker to use with modelica buildings library
+###  If using remote server
 ```bash
 source x11config.sh
 ```
@@ -67,7 +66,7 @@ After starting a container, add location of the buildings library to MODELICAPAT
 export MODELICAPATH=path/to/mount/modelica-buildings_library:$MODELICAPATH
 ```
 * eg -v $HOME/nauga/buildings_library_dev:/home/developer/buildings_library_dev:ro" for read only. remove "ro" if you want to modify the folder components from inside the docker
-##### or If setting up container on local computer
+#### or If setting up container on local computer
 ```bash
 docker run -it -e DISPLAY=${DISPLAY} -v $path/to/modelica-buildings_library:path/to/mount/modelica-buildings_library jmodelica:1.0
 ```
@@ -76,7 +75,7 @@ After starting a container, add location of the buildings library to MODELICAPAT
 export MODELICAPATH=path/to/mount/modelica-buildings_library:$MODELICAPATH
 ```
 
-### Compile any .mo model in python2 environment using pymodelica
+## Compile any .mo model in python2 environment using pymodelica
 ```bash
 ipython
 ```
@@ -87,7 +86,7 @@ fmu_name = compile_fmu(model) # writes the fmu to fmu_name as well as to local f
 ```
 Now, you can simulate fmu either in pyfmi for python2 or pyfmi for python3
 
-#### For python2
+### For python2
 ```bash
 ipython
 ```
@@ -97,7 +96,7 @@ mod = load_fmu(Buildings.Controls.OBC.CDL.Continuous.Validation.LimPID.fmu)
 res = mod.simulate()
 ```
 or
-#### For python3
+### For python3
 ```bash
 conda activate modelicagym
 ipython
@@ -108,7 +107,7 @@ mod = load_fmu(Buildings.Controls.OBC.CDL.Continuous.Validation.LimPID.fmu)
 res = mod.simulate()
 ```
 
-### Other examples in python 2 ipython shell in base environment
+## Other examples in python 2 ipython shell in base environment
 
 ```bash
 dveloper@container_id# ipython
