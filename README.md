@@ -59,7 +59,7 @@ docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH -v $p
 ```
 for example for my host system with username nauga, having the buildings library inside buildings_library_dev
 ```bash
-docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH -v $home/nauga/buildings_library_dev:/home/developer/buildings_library_dev jmodelica:1.0
+docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH -v /home/nauga/buildings_library_dev:/home/developer/buildings_library_dev jmodelica:1.0
 ```
 After starting a container, add location of the buildings library to MODELICAPATH
 ```bash
