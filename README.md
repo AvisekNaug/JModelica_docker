@@ -50,7 +50,7 @@ If setting up container on local computer
 docker run -it -e DISPLAY=${DISPLAY} jmodelica:1.0
 ```
 * add "-v $path/to/modelica-buildings:path/to/mount:ro" if mounting buildings library
-* eg -v $/home/nauga/buildings_library_dev:/home/developer/buildings_library_dev:ro" for read only. remove "ro" if you want to modify the folder components from inside the docker
+* eg -v $HOME/nauga/buildings_library_dev:/home/developer/buildings_library_dev:ro" for read only. remove "ro" if you want to modify the folder components from inside the docker
 
 ```bash
 export MODELICAPATH=path/to/mount:$MODELICAPATH
