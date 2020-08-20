@@ -44,7 +44,7 @@ source x11config.sh
 docker run -it -e DISPLAY=${DISPLAY} -v $XAUTH:$XAUTH -e XAUTHORITY=$XAUTH jmodelica:1.0
 ```
 
-#### or If setting up container on local computer
+### or If setting up container on local computer
 ```bash
 docker run -it -e DISPLAY=${DISPLAY} jmodelica:1.0
 ```
@@ -66,7 +66,7 @@ After starting a container, add location of the buildings library to MODELICAPAT
 export MODELICAPATH=path/to/mount/modelica-buildings_library:$MODELICAPATH
 ```
 * eg -v $HOME/nauga/buildings_library_dev:/home/developer/buildings_library_dev:ro" for read only. remove "ro" if you want to modify the folder components from inside the docker
-#### or If setting up container on local computer
+### or If setting up container on local computer
 ```bash
 docker run -it -e DISPLAY=${DISPLAY} -v $path/to/modelica-buildings_library:path/to/mount/modelica-buildings_library jmodelica:1.0
 ```
