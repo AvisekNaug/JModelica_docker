@@ -13,11 +13,15 @@ Note that pymodelica and pyjmi is supported only for python 2 installed with JMo
 
 # Steps:
 
-## Obtain docker file
+## Create directory
 ```bash
 mkdir $HOME/JModelica_docker
 cd $HOME/JModelica_docker
+```
+## Obtain docker file and environment file
+```bash
 wget https://github.com/AvisekNaug/JModelica_docker/raw/master/Dockerfile
+wget https://github.com/AvisekNaug/JModelica_docker/raw/master/environment.yml
 ```
 ## Copy Jmodelica Source code in zip format to this directory and rename it
 ```bash
