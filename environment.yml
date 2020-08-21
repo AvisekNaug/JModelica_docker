@@ -1,0 +1,10 @@
+name: modelicagym
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8
+  - matplotlib
+  - ipython
+  - pyfmi
+  - gym
+  - pyglet
