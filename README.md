@@ -8,6 +8,11 @@
 * Xming is installed on local computer if performing this set up on remote server
 * DISPLAY environmental variable is set (for eg "localhost:10.0")
 
+The docker image is hosted on docker hub. If you don't want to build from source run
+```bash
+docker pull aviseknaug/jmodelica
+```
+
 Do not clone this folder! This repo merely exists to have all the isntructions and is by no means complete.
 Note that pymodelica and pyjmi is supported only for python 2 installed with JModelica
 
