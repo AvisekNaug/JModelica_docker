@@ -1,5 +1,5 @@
 XSOCK=/tmp/.X11-unix
-XAUTH=/tmp/.docker.xauth
+XAUTH=/tmp/.docker.xauth-n
 xauth nlist $DISPLAY | sed -e 's/^..../ffff/' | sudo xauth -f $XAUTH nmerge -
 sudo chmod 777 $XAUTH
 X11PORT=`echo $DISPLAY | sed 's/^[^:]*:\([^\.]\+\).*/\1/'`
