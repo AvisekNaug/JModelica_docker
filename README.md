@@ -10,7 +10,7 @@
 
 The docker image is hosted on docker hub. If you don't want to build from source run
 ```bash
-docker pull aviseknaug/jmodelica
+docker pull aviseknaug/jmodelica:2.0
 ```
 
 Do not clone this folder! This repo merely exists to have all the isntructions and is by no means complete.
